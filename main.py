@@ -8,7 +8,7 @@ def carregar():
 
     try:
         with open(ARQUIVO, "r", newline="", encoding="utf-8") as arquivo:
-            leitor = csv.reader(arquivo)
+            leitor = csv.DictReader(arquivo)
 
             for medicamento in leitor:
                 medicamentos.append(medicamento)
@@ -23,7 +23,7 @@ def salvar(medicamentos):
     with open(ARQUIVO, "w", newline="", encoding="utf-8") as arquivo:
         campos = ["nome", "categoria", "quantidade"]
 
-        escritor = csv.writer(arquivo, fieldnames=campos)
+        escritor = csv.DictWriter(arquivo, fieldnames=campos)
         escritor.writeheader()
         escritor.writerows(medicamentos)
 
@@ -43,13 +43,15 @@ def cadastrar(medicamentos):
         print("Digite uma quantidade válida!")
         return medicamentos
 
-    novo_medicamento = [nome, categoria, quantidade]
+    novo_medicamento = {
+        "nome": nome,
+        "categoria": categoria,
+        "quantidade": quantidade
+    }
 
     medicamentos.append(novo_medicamento)
     salvar(medicamentos)
-1
     print("Medicamento cadastrado com sucesso!")
-
     return medicamentos
 
 # Lista os medicamentos cadastrados
